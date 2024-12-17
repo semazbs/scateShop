@@ -35,9 +35,9 @@ class DeviceController {
         try {
             const deletedRowsCount = await Device.destroy({ where: { id } });
             if (!deletedRowsCount) {
-                return res.status(404).json({ message: "Устройство не найдено" });
+                return res.status(404).json({ message: "Товар не найден" });
             }
-            return res.json({ message: "Устройство успешно удалено" });
+            return res.json({ message: "Товар успешно удален" });
         } catch (e) {
             console.error(e);
             return res.status(500).json({ message: "Ошибка сервера" });

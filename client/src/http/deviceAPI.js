@@ -1,6 +1,4 @@
 import {$authHost, $host} from "./index";
-import jwt_decode from "jwt-decode";
-
 export const createType = async (type) => {
     const {data} = await $authHost.post('api/type', type)
     return data
@@ -26,10 +24,18 @@ export const createDevice = async (device) => {
     return data
 }
   
-  export const deleteItem = async (deviceId) => {
-    const { data } = await $authHost.delete(`api/device?id=${deviceId}`);
-    return data;
+export const deleteItem = async (deviceId) => {
+    try {
+        const { data } = await $authHost.delete(`api/device`, {
+            params: { id: deviceId }, // Передаем id через params
+        });
+        return data;
+    } catch (error) {
+        console.error("Ошибка удаления товара:", error.response?.data?.message || error.message);
+        throw error;
+    }
 };
+
 
 export const getItems = async (typeId, brandId, page, limit= 5) => {
     const {data} = await $host.get('api/device', {params: {

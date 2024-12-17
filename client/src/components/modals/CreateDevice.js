@@ -4,7 +4,6 @@ import {Button, Dropdown, Form, Row, Col} from "react-bootstrap";
 import {Context} from "../../index";
 import {createDevice, fetchBrands, fetchTypes} from "../../http/deviceAPI";
 import {observer} from "mobx-react-lite";
-import {toast} from "react-toastify"; // Для уведомлений (npm install react-toastify)
 
 const CreateDevice = observer(({show, onHide}) => {
     const {device} = useContext(Context);
@@ -35,22 +34,7 @@ const CreateDevice = observer(({show, onHide}) => {
     };
 
     const addDevice = async () => {
-        // Валидация перед отправкой
-        if (!name.trim()) {
-            toast.error("Введите название устройства!");
-            return;
-        }
-
-        if (price <= 0) {
-            toast.error("Цена должна быть положительным числом!");
-            return;
-        }
-
-        if (!file) {
-            toast.error("Добавьте изображение устройства!");
-            return;
-        }
-
+      
         const formData = new FormData();
         formData.append('name', name);
         formData.append('price', `${price}`);
@@ -61,15 +45,17 @@ const CreateDevice = observer(({show, onHide}) => {
 
         try {
             await createDevice(formData);
-            toast.success("Устройство успешно добавлено!");
+
             onHide();
         } catch (error) {
             if (error.response) {
-                toast.error(`Ошибка: ${error.response.data.message || "Не удалось добавить устройство"}`);
+                console.log('Сервер вернул ответ с ошибкой')
             } else if (error.request) {
-                toast.error("Сервер не отвечает. Проверьте подключение.");
+                console.log('Запрос был отправлен, но ответа нет')
+
             } else {
-                toast.error(`Ошибка: ${error.message}`);
+                console.log('Произошла ошибка при настройке запроса')
+
             }
         }
     };
@@ -82,7 +68,7 @@ const CreateDevice = observer(({show, onHide}) => {
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Добавить устройство
+                    Добавить товар
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -117,7 +103,7 @@ const CreateDevice = observer(({show, onHide}) => {
                         value={name}
                         onChange={e => setName(e.target.value)}
                         className="mt-3"
-                        placeholder="Введите название устройства"
+                        placeholder="Введите название товара"
                     />
                     <Form.Control
                         value={price}
@@ -128,7 +114,7 @@ const CreateDevice = observer(({show, onHide}) => {
                             }
                         }}
                         className="mt-3"
-                        placeholder="Введите стоимость устройства"
+                        placeholder="Введите стоимость товара"
                         type="number"
                     />
                     <Form.Control

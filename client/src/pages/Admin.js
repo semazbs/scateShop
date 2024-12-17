@@ -3,7 +3,6 @@ import {Button, Container} from "react-bootstrap";
 import CreateBrand from "../components/modals/CreateBrand";
 import CreateDevice from "../components/modals/CreateDevice";
 import CreateType from "../components/modals/CreateType";
-/*import DeleteItem from "../components/modals/DeleteItem";*/
 
 const Admin = () => {
     const [brandVisible, setBrandVisible] = useState(false)
@@ -31,11 +30,10 @@ const Admin = () => {
                 className="mt-4 p-2"
                 onClick={() => setDeviceVisible(true)}
             >
-                Добавить устройство
+                Добавить товар
             </Button>
             <CreateBrand show={brandVisible} onHide={() => setBrandVisible(false)}/>
             <CreateDevice show={deviceVisible} onHide={() => setDeviceVisible(false)}/>
-            <CreateType show={typeVisible} onHide={() => setTypeVisible(false)}/>
             <CreateType show={typeVisible} onHide={() => setTypeVisible(false)}/>
         </Container>
     );

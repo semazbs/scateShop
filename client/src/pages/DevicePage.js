@@ -13,7 +13,7 @@ const DevicePage = () => {
 
     return (
         <Container className="mt-4">
-            {/* Название устройства */}
+            {/* Название товара */}
             <Row className="mb-4">
                 <Col>
                     <h2 className="text-center">{device.name}</h2>

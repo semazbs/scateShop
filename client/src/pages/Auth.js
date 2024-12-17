@@ -18,15 +18,21 @@ const Auth = observer(() => {
     const [password, setPassword] = useState('')
 
     const click = async () => {
-        let data;
-        if (isLogin) {
-            data = await login(email, password);
-        } else {
-            data = await registration(email, password);
+        try {
+            let data;
+            if (isLogin) {
+                data = await login(email, password);
+            } else {
+                data = await registration(email, password);
+            }
+            // Сохранение токена в localStorage
+            localStorage.setItem("token", data.token);
+            user.setUser(data);
+            user.setIsAuth(true);
+            history(SHOP_ROUTE);
+        } catch (error) {
+            console.error("Ошибка авторизации:", error.response?.data?.message || error.message);
         }
-        user.setUser(data);
-        user.setIsAuth(true);
-        history(SHOP_ROUTE);
     };
     
 

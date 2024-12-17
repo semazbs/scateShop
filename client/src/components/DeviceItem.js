@@ -4,48 +4,57 @@ import Image from "react-bootstrap/Image";
 import { Context } from "..";
 import { useNavigate } from "react-router-dom";
 import { DEVICE_ROUTE } from "../utils/consts";
-import { deleteItem, getItems } from "../http/deviceAPI";
-import { toast } from "react-toastify";
+import {deleteItem, getItems } from "../http/deviceAPI";
+
+if (Notification.permission === "default") {
+  Notification.requestPermission().then(permission => {
+    if (permission === "granted") {
+      console.log("Уведомления разрешены пользователем");
+    } else {
+      console.log("Уведомления запрещены пользователем");
+    }
+  });
+}
+
 
 const DeviceItem = ({ device }) => {
   const { device: deviceStore } = useContext(Context);
   const history = useNavigate();
 
+  // const handleDelete = (id) => {
+  //   deleteItem(id)
+  //     (() => {
+  //       // Обновление списка товаров
+  //       getItems(null, null, 1, 100).then((data) => {
+  //         deviceStore.setDevices(data.rows);
+  //         deviceStore.setTotalCount(data.count);
+  //       });
+  //     });
+  // };
+
   const handleDelete = (id) => {
     deleteItem(id)
-    
-        .then(() => {
-            /// Уведомление об успешном удалении
-            toast.success("Товар успешно удален!", {
-                position: "top-right",
-                autoClose: 3000, // Автоматическое закрытие через 3 секунды
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-
-            // Обновление списка устройств
-            getItems(null, null, 1, 100).then((data) => {
-                deviceStore.setDevices(data.rows);
-                deviceStore.setTotalCount(data.count);
-            });
-        })
-        .catch(() => {
-            // Уведомление об ошибке
-            toast.error("Не удалось удалить товар. Попробуйте снова.", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+      .then(() => {
+        // Создание уведомления
+        if (Notification.permission === "granted") {
+          new Notification("Успех", {
+            body: "Товар успешно удален!",
+            // icon: "https://cdn-icons-png.flaticon.com/512/190/190411.png", // Иконка для уведомления
+          });
+        }
+  
+        // Обновление списка товаров
+        getItems(null, null, 1, 100).then((data) => {
+          deviceStore.setDevices(data.rows);
+          deviceStore.setTotalCount(data.count);
         });
-};
-
+      })
+      .catch(() => {
+        // Обработка ошибки
+        console.error("Не удалось удалить товар.");
+      });
+  };
+  
 
   return (
     <Col

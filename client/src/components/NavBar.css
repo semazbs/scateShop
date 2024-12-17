@@ -1,0 +1,16 @@
+/* NavBar.css */
+.custom-navbar {
+  background-color: #ffffff;
+}
+
+.custom-navbar .navbar-brand {
+  color: #343a40;
+}
+
+.custom-navbar .btn {
+  transition: all 0.3s ease;
+}
+
+.custom-navbar .btn:hover {
+  transform: scale(1.05);
+}
