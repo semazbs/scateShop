@@ -7,6 +7,7 @@ module.exports = function(role) {
         }
         try {
             const token = req.headers.authorization.split(' ')[1] // Bearer asfasnfkajsfnjk
+            console.log('Токен:', token) // Вывод token
             if (!token) {
                 return res.status(401).json({message: "Некорректный формат токена"})
             }
@@ -17,6 +18,7 @@ module.exports = function(role) {
             req.user = decoded;
             next()
         } catch (e) {
+            console.log('Ошибка:', e) // Вывод ошибки
             res.status(401).json({message: "Не авторизован"})
         }
     };

@@ -10,6 +10,7 @@ export const registration = async (email, password) => {
 export const login = async (email, password) => {
     const {data} = await $host.post('api/user/login', {email, password})
     localStorage.setItem('token', data.token)
+console.log(localStorage.getItem('token'))
     return jwtDecode(data.token)
 }
 
@@ -20,7 +21,11 @@ export const check = async () => {
             throw new Error("Токен отсутствует!");
         }
     const {data} = await $authHost.get('api/user/auth' )
+    console.log(data.token)
+
     localStorage.setItem('token', data.token);
+    console.log(data.token)
+
     return jwtDecode(data.token)
         }
         catch (error) {

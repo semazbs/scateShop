@@ -20,11 +20,12 @@ const App = observer(() => {
             .then((data) => {
                 user.setUser(data);
                 user.setIsAuth(true);
-            }).finally(() => setLoading(false))
+            })
             .catch((error) => {
                 console.error("Ошибка проверки токена:", error);
                 localStorage.removeItem("token");
-            });
+            })
+            .finally(() => setLoading(false))
         } else {
             console.log("Токен отсутствует. Пользователь не авторизован.");
         }
